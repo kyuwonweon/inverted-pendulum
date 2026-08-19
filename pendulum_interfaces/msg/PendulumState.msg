@@ -1,0 +1,6 @@
+std_msgs/Header header
+
+float64 cart_position
+float64 cart_velocity
+float64 pendulum_angle
+float64 pendulum_angular_velocity
