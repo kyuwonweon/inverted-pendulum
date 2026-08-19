@@ -1,0 +1,11 @@
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+
+# clangd / language server
+.cache/
+compile_commands.json
+
+# OS cruft
+.DS_Store
