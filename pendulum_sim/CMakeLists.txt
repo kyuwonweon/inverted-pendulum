@@ -12,6 +12,10 @@ find_package(pendulum_interfaces REQUIRED)
 
 add_executable(pen_sim src/pen_sim.cpp)
 ament_target_dependencies(pen_sim rclcpp pendulum_interfaces)
+target_include_directories(pen_sim PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
 
 install(TARGETS
   pen_sim
@@ -28,6 +32,13 @@ if(BUILD_TESTING)
   # a copyright and license is added to all source files
   set(ament_cmake_cpplint_FOUND TRUE)
   ament_lint_auto_find_test_dependencies()
+
+  find_package(ament_cmake_gtest REQUIRED)
+  ament_add_gtest(test_pendulum_dynamics test/test_pendulum_dynamics.cpp)
+  target_include_directories(test_pendulum_dynamics PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+  )
 endif()
 
 ament_package()
