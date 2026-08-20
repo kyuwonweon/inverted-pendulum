@@ -10,6 +10,14 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(pendulum_interfaces REQUIRED)
 
+add_executable(pen_sim src/pen_sim.cpp)
+ament_target_dependencies(pen_sim rclcpp pendulum_interfaces)
+
+install(TARGETS
+  pen_sim
+  DESTINATION lib/${PROJECT_NAME}
+)
+
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   # the following line skips the linter which checks for copyrights
