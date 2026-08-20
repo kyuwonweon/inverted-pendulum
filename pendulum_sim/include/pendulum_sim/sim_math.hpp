@@ -35,3 +35,12 @@ inline State derivative(const State & s, double force)
     (l * (M + m * std::sin(s.theta) * std::sin(s.theta)));
   return State{s.x_dot, x_ddot, s.theta_dot, theta_ddot};
 }
+
+inline State rk4step(const State & s, double force, double dt)
+{
+  State k1 = derivative(s, force);
+  State k2 = derivative(s + k1 * (dt / 2.0), force);
+  State k3 = derivative(s + k2 * (dt / 2.0), force);
+  State k4 = derivative(s + k3 * dt, force);
+  return s + (k1 + k2 * 2.0 + k3 * 2.0 + k4) * (dt / 6.0);
+}
