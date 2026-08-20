@@ -23,6 +23,7 @@ public:
 
 private:
   State state_ = {0.0, 0.0, 0.15, 0.0};
+  double force_ = 0.0;
 
   rclcpp::Publisher<pendulum_interfaces::msg::PendulumState>::SharedPtr state_pub_;
   rclcpp::Subscription<pendulum_interfaces::msg::PendulumCommand>::SharedPtr command_sub_;
@@ -30,12 +31,21 @@ private:
 
   void command_cb(const pendulum_interfaces::msg::PendulumCommand::SharedPtr msg)
   {
-    RCLCPP_INFO(this->get_logger(), "recieved force: %f", msg->cart_force);
+    force_ = msg->cart_force;
   }
 
   void timer_cb()
   {
-    RCLCPP_INFO(this->get_logger(), "add details later");
+    constexpr double dt = 0.001;
+    state_ = rk4step(state_, force_, dt);
+    auto msg = pendulum_interfaces::msg::PendulumState();
+    msg.header.stamp = this->now();
+    msg.cart_position = state_.x;
+    msg.cart_velocity = state_.x_dot;
+    msg.pendulum_angle = state_.theta;
+    msg.pendulum_angular_velocity = state_.theta_dot;
+
+    state_pub_->publish(msg);
   }
 };
 
