@@ -10,6 +10,14 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(pendulum_interfaces REQUIRED)
 
+add_executable(lqr src/lqr.cpp)
+ament_target_dependencies(lqr rclcpp pendulum_interfaces)
+
+install(TARGETS
+  lqr
+  DESTINATION lib/${PROJECT_NAME}
+)
+
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   # the following line skips the linter which checks for copyrights
