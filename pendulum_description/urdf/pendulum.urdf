@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<robot name="pendulum">
+
+  <material name="rail_gray">
+    <color rgba="0.5 0.5 0.5 1.0"/>
+  </material>
+  <material name="cart_blue">
+    <color rgba="0.1 0.3 0.8 1.0"/>
+  </material>
+  <material name="pole_orange">
+    <color rgba="0.9 0.4 0.1 1.0"/>
+  </material>
+
+  <!-- root link: the fixed track the cart slides along -->
+  <link name="rail">
+    <visual>
+      <geometry>
+        <box size="4.0 0.05 0.05"/>
+      </geometry>
+      <material name="rail_gray"/>
+    </visual>
+  </link>
+
+  <link name="cart">
+    <visual>
+      <geometry>
+        <box size="0.3 0.2 0.2"/>
+      </geometry>
+      <material name="cart_blue"/>
+    </visual>
+  </link>
+
+  <!-- cart slides along the rail's x-axis; position = state.x -->
+  <joint name="rail_to_cart" type="prismatic">
+    <parent link="rail"/>
+    <child link="cart"/>
+    <origin xyz="0 0 0.1" rpy="0 0 0"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-2.0" upper="2.0" effort="100.0" velocity="10.0"/>
+  </joint>
+
+  <link name="pole">
+    <visual>
+      <origin xyz="0 0 0.5" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.02" length="1.0"/>
+      </geometry>
+      <material name="pole_orange"/>
+    </visual>
+  </link>
+
+  <!-- pole rotates about the cart's y-axis; angle = state.theta, 0 = upright -->
+  <joint name="cart_to_pole" type="continuous">
+    <parent link="cart"/>
+    <child link="pole"/>
+    <origin xyz="0 0 0.1" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+</robot>
