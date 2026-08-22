@@ -22,7 +22,7 @@ public:
   }
 
 private:
-  State state_ = {0.0, 0.0, 0.15, 0.0};
+  State state_ = {0.0, 0.0, 0.5, 0.0};
   double force_ = 0.0;
 
   rclcpp::Publisher<pendulum_interfaces::msg::PendulumState>::SharedPtr state_pub_;
